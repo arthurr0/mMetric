@@ -10,6 +10,8 @@ interface ProjectRepository extends MongoRepository<Project, Long> {
 
   Optional<Project> findByName(String name);
 
+  Optional<Project> findByIntegrationKey(String integrationKey);
+
   @Query(value = "{ 'name' : ?0 }", count = true)
   int countByName(String name);
 

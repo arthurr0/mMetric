@@ -22,6 +22,10 @@ public class ProjectService {
     return this.repository.findByName(name);
   }
 
+  public Optional<Project> findByIntegrationKey(String integrationKey){
+    return this.repository.findByIntegrationKey(integrationKey);
+  }
+
   public boolean exists(long id) {
     return this.repository.countById(id) > 0;
   }
