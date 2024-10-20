@@ -1,8 +1,7 @@
 # <div align="center"><img src="https://i.imgur.com/2WyiLMU.png" alt="mMetric Logo" width="200"/></div>
 
-<h1 align="center">mMetric</h1>
-
-<p align="center">An open-source solution for monitoring your metrics.</p>
+<div align="center"><h1>mMetric</h1></div>
+<div align="center"><p>An open-source solution for monitoring your metrics.</p></div>
 
 ### About
 
