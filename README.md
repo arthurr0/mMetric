@@ -4,32 +4,32 @@
 
 <p align="center">An open-source solution for monitoring your metrics.</p>
 
-## About
+### About
 
 mMetric is a powerful, flexible tool designed to help you track and analyze various metrics in your projects. Whether you're monitoring performance, user engagement, or system health, mMetric provides the framework you need to collect, process, and visualize your data effectively.
 
-## Features
+### Features
 
 - Coming soon!
 
-## Examples
+### Examples
 
 ```java
 // Coming soon!
 ```
 
-## Installation
+### Installation
 
 Docker-Compose
 ```yaml
 # Coming soon!
 ```
 
-## Documentation
+### Documentation
 
 Coming soon!
 
-## Contributing
+### Contributing
 
 Contributions are welcome! If you'd like to contribute, please follow these steps:
 
