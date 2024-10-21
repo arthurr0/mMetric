@@ -12,24 +12,42 @@ import java.util.logging.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class MetricsBuilder {
+public class MetricsPublisher {
 
   private final Logger logger = Logger.getLogger("Metrics");
   private final HttpClient httpClient = HttpClient.newBuilder().build();
 
-  private final String endpoint;
-  private final long projectId;
-  private final String integrationKey;
+  private boolean debug;
+
+  private final MetricAuth auth;
   private final List<Metric> metrics = new ArrayList<>();
 
-  public MetricsBuilder(String endpoint, long projectId, String integrationKey) {
-    this.endpoint = endpoint;
-    this.projectId = projectId;
-    this.integrationKey = integrationKey;
+  public MetricsPublisher(MetricAuth auth) {
+    this.auth = auth;
   }
 
-  public MetricsBuilder addMetrics(String name, String value, MetricValueType valueType) {
-    this.metrics.add(new Metric(this.projectId, name, value, valueType));
+  public MetricsPublisher addMetrics(String name, String value) {
+    this.metrics.add(new Metric(this.auth.getProjectId(), name, value, MetricValueType.STRING));
+    return this;
+  }
+
+  public MetricsPublisher addMetrics(String name, Integer value) {
+    this.metrics.add(new Metric(this.auth.getProjectId(), name, Integer.toString(value), MetricValueType.INTEGER));
+    return this;
+  }
+
+  public MetricsPublisher addMetrics(String name, Double value) {
+    this.metrics.add(new Metric(this.auth.getProjectId(), name, Double.toString(value), MetricValueType.DOUBLE));
+    return this;
+  }
+
+  public MetricsPublisher addMetrics(String name, Boolean value) {
+    this.metrics.add(new Metric(this.auth.getProjectId(), name, Boolean.toString(value), MetricValueType.BOOLEAN));
+    return this;
+  }
+
+  public MetricsPublisher withDebug() {
+    this.debug = true;
     return this;
   }
 
@@ -38,17 +56,25 @@ public class MetricsBuilder {
       String body = convertMetricsToJson();
 
       HttpRequest request = HttpRequest.newBuilder()
-          .uri(URI.create(this.endpoint))
+          .uri(URI.create(this.auth.getEndpoint()))
           .PUT(BodyPublishers.ofString(body))
           .header("Content-Type", "application/json")
-          .header("X-INTEGRATION-KEY", this.integrationKey)
+          .header("X-INTEGRATION-KEY", this.auth.getIntegrationKey())
           .build();
 
       HttpResponse<String> response = this.httpClient.send(request, BodyHandlers.ofString());
       if (response.statusCode() != 201) {
+        if (debug) {
+          this.logger.severe("Bad status code %s".formatted(response.statusCode()));
+        }
+
         throw new RuntimeException("Bad status code.");
       }
     } catch (Exception exception) {
+      if (debug) {
+        exception.printStackTrace();
+      }
+
       this.logger.info("Metrics can't be published.");
     }
   }
