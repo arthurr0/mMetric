@@ -37,3 +37,4 @@ out/
 ### VS Code ###
 .vscode/
 /metric-backend/src/main/resources/.env
+/metric-java-api/gradle.properties
