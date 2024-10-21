@@ -13,7 +13,24 @@ mMetric is a powerful, flexible tool designed to help you track and analyze vari
 ### Examples
 
 ```java
-// Coming soon!
+public static ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+
+public static void main(String[] args) {
+  MetricAuth auth = new MetricAuth(
+      1, //Project id
+      "https://metrics.example.com/api/v1/metric", //Endpoint
+      "505aaYsoSXVDj7xPsQKAMyyL6DxirX8h" //Integration key
+  );
+
+  scheduler.scheduleAtFixedRate(() -> {
+    new MetricsPublisher(auth)
+        .addMetrics("version", "1.2.3")
+        .addMetrics("users", 150)
+        .addMetrics("session-time", 4.51)
+        .addMetrics("chrome-browser", true)
+        .publish();
+  }, 1, 2, TimeUnit.MINUTES);
+}
 ```
 
 ### Installation
